@@ -29,6 +29,7 @@ const Label: React.FC<LabelProps> = ({
     <label
       className={cn(
         'flex',
+        'text-gray-99',
         'transition-transform',
         'text-button',
         'select-none',

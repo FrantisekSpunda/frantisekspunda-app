@@ -105,7 +105,7 @@ const InputText: React.FC<InputTextProps> = ({
         <input
           ref={ref}
           className={cn(
-            'w-full h-full relative outline-none text-black text-base placeholder-disabled bg-transparent dark:text-white dark:placeholder:text-gray-90 autofill-style-disable',
+            'w-full h-full relative outline-none text-base bg-transparent autofill-style-disable',
             inputClassName
           )}
           type={props.type || 'text'}

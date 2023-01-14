@@ -114,7 +114,7 @@ const Button: React.FC<ButtonProps> = ({
       style={{ height: Number(size) / 16 + 'rem' }}
       className={cn(
         color && 'button--' + color,
-        'flex items-center border px-4 rounded outline-blue-60 outline-offset-[3px] shadow-sm',
+        'flex items-center border px-6 rounded-sm outline-blue-60 outline-offset-[3px] uppercase italic',
         children ? (icon?.position === 'right' ? 'pr-3' : 'pl-3') : 'px-1.5',
         loading && 'justify-center',
         className

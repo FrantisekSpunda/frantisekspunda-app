@@ -3,8 +3,8 @@ const plugin = require('tailwindcss/plugin')
 
 const colors = {
   black: '#000000',
-  white: '#FFFFFF',
-  main: '#F5F5F5',
+  white: '#F1F1F1',
+  main: '#0C0C0E',
   transparent: 'transparent',
   gray: {
     10: '#1B1B1B',
@@ -20,17 +20,17 @@ const colors = {
     99: '#FBFBFB',
   },
   primary: {
-    10: '#0B0424',
-    20: '#201060',
-    30: '#3A20A2',
-    40: '#5C3BE6',
-    50: '#7453F9',
-    60: '#937BF5',
-    70: '#AF9DF4',
-    80: '#CABFF5',
-    90: '#E4DFFA',
-    95: '#F1EEFE',
-    99: '#F9F7FD',
+    5: '#0c0c0e',
+    10: '#000729',
+    20: '#000e55',
+    30: '#001790',
+    40: '#0020ca',
+    50: '#1f43ff',
+    60: '#5c72ea',
+    70: '#7f8fe9',
+    80: '#98a3e2',
+    90: '#c1c7e9',
+    95: '#cfd3e4',
   },
   green: {
     10: '#0A1F08',
@@ -86,21 +86,27 @@ module.exports = {
         '2rem',
         {
           lineHeight: '2.5rem', // 40
-          fontWeight: '600',
+          fontWeight: '700',
+          letterSpacing: 0.96,
+          fontStyle: 'italic',
         },
       ],
       h2: [
         '1.75rem',
         {
           lineHeight: '2.25rem', // 36
-          fontWeight: '600',
+          fontWeight: '700',
+          letterSpacing: 0.84,
+          fontStyle: 'italic',
         },
       ],
       h3: [
         '1.5rem',
         {
           lineHeight: '2rem', // 32
-          fontWeight: '600',
+          fontWeight: '700',
+          letterSpacing: 0.72,
+          fontStyle: 'italic',
         },
       ],
 
@@ -108,7 +114,9 @@ module.exports = {
         '1.25rem',
         {
           lineHeight: '1.75rem', // 28
-          fontWeight: '600',
+          fontWeight: '700',
+          letterSpacing: 0.6,
+          fontStyle: 'italic',
         },
       ],
       subheading: [
@@ -116,6 +124,7 @@ module.exports = {
         {
           lineHeight: '1.5rem', // 24
           fontWeight: '600',
+          letterSpacing: 0.54,
         },
       ],
 
@@ -123,14 +132,16 @@ module.exports = {
         '0.875rem',
         {
           lineHeight: '1.25rem', // 20
-          fontWeight: '500',
+          fontWeight: '600',
+          letterSpacing: 0.42,
         },
       ],
       base: [
         '0.875rem',
         {
           lineHeight: '1.25rem', // 20
-          fontWeight: '400',
+          fontWeight: '600',
+          letterSpacing: 0.42,
         },
       ],
 
@@ -138,63 +149,33 @@ module.exports = {
         '0.75rem',
         {
           lineHeight: '1rem', // 16
-          fontWeight: '500',
+          fontWeight: '600',
+          letterSpacing: 0.36,
         },
       ],
     },
     fontFamily: {
-      sans: ['Satoshi', ...defaultTheme.fontFamily.sans],
+      sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
     },
     colors: {
       ...colors,
       text: {
-        primary: colors.gray[10],
-        secondary: colors.gray[40],
-        disabled: colors.gray[60],
-        descructive: colors.red[40],
-        inverse: colors.white,
+        primary: colors.white,
       },
       icon: {
-        primary: colors.gray[10],
-        disabled: colors.gray[70],
-        descructive: colors.red[40],
-        inverse: colors.white,
+        primary: colors.white,
       },
       border: {
-        default: colors.gray[90],
-        active: colors.blue[60],
-        error: colors.red[40],
-        disabled: colors.gray[95],
-      },
-      surface: {
-        default: colors.white,
-        subdued: colors.gray[99],
-        hover: colors.gray[95],
-        disabled: colors.gray[99],
-        descructive: {
-          hover: colors.red[95],
-        },
+        default: colors.gray[40],
       },
       background: {
-        default: colors.white,
-        subdued: colors.gray[99],
-        inverse: colors.primary[10],
-        'inverse-hover': colors.primary[90],
-        'inverse-active': colors.primary[90],
+        default: colors.black,
       },
       button: {
         primary: colors.primary[40],
         'primary-hover': colors.primary[30],
         'primary-pressed': colors.primary[20],
-        'primary-disabled': colors.gray[95],
-        secondary: colors.white,
-        'secondary-hover': colors.gray[99],
-        'secondary-pressed': colors.gray[95],
-        'secondary-disabled': colors.white,
-        descructive: colors.red[40],
-        'descructive-hover': colors.red[30],
-        'descructive-pressed': colors.red[20],
-        'descructive-disabled': colors.gray[95],
+        'primary-disabled': colors.gray[40],
       },
     },
     extend: {
@@ -202,6 +183,7 @@ module.exports = {
         0: '0ms',
       },
       boxShadow: {
+        box: '8px 8px 0px 0px ' + colors.gray[10],
         sm: '0px 1px 2px #F1F1F1',
         'input-error': '0px 0px 7px -3px',
         md: '0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06);',

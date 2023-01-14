@@ -54,7 +54,7 @@ a {
 
   a {
     text-decoration: underline;
-    @apply text-base text-blue-40
+    @apply text-base text-primary-60
   }
 }
 

@@ -28,17 +28,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       <div
         className={cn(
-          store.sidebarOpened
-            ? 'w-[calc(100vw_-_16rem)]'
-            : 'w-[calc(100vw_-_4rem)]',
-          'h-screen transition-[width] duration-300 text-black dark:text-white'
+          'w-screen h-screen transition-[width] duration-300 text-gray-99'
         )}
       >
         {/* {!!page.layout?.topbar && <Navbar />} */}
 
         <main
           id="main"
-          className="w-full h-full overflow-auto bg-main scrollbar-styled"
+          className="w-full h-full overflow-auto text-white bg-main scrollbar-styled"
         >
           {children}
         </main>

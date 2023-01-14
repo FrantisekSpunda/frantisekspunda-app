@@ -74,7 +74,7 @@ const config = {
   },
 }
 
-export type btnColors = 'primary' | 'secondary' | 'tertiary' | 'destructive'
+export type btnColors = 'primary'
 
 type getColorsReturn = {
   [x in btnColors]: {
@@ -105,71 +105,18 @@ type getColorsReturn = {
 
 const getColors = (): getColorsReturn => ({
   primary: {
-    color: config.theme.colors.white,
-    icon: config.theme.colors.white,
-    bg: config.theme.colors.primary[40],
-    border: config.theme.colors.primary[40],
+    color: '#F1F1F1',
+    icon: '#F1F1F1',
+    bg: '#5c72ea',
+    border: 'transparent',
     hover: {
-      bg: config.theme.colors.primary[30],
-      border: config.theme.colors.primary[30],
+      bg: '#1f43ff',
     },
     active: {
-      bg: config.theme.colors.primary[20],
-      border: config.theme.colors.primary[20],
+      bg: '#0020ca',
     },
     disabled: {
-      bg: config.theme.colors.gray[95],
-      border: config.theme.colors.gray[95],
-      color: config.theme.colors.gray[60],
-    },
-  },
-  secondary: {
-    color: config.theme.colors.gray[20],
-    icon: config.theme.colors.gray[60],
-    bg: config.theme.colors.white,
-    border: config.theme.colors.gray[90],
-    hover: {
-      bg: config.theme.colors.gray[95],
-    },
-    active: {
-      bg: config.theme.colors.gray[90],
-    },
-    disabled: {
-      bg: config.theme.colors.transparent,
-      border: config.theme.colors.gray[95],
-      color: config.theme.colors.gray[60],
-    },
-  },
-  tertiary: {
-    color: config.theme.colors.blue[40],
-    icon: config.theme.colors.blue[40],
-    bg: config.theme.colors.transparent,
-    border: config.theme.colors.transparent,
-    hover: {
-      color: config.theme.colors.blue[30],
-    },
-    active: {
-      color: config.theme.colors.blue[20],
-    },
-    disabled: {
-      color: config.theme.colors.gray[60],
-    },
-  },
-  destructive: {
-    color: config.theme.colors.white,
-    icon: config.theme.colors.white,
-    bg: config.theme.colors.red[40],
-    border: config.theme.colors.red[40],
-    hover: {
-      bg: config.theme.colors.red[30],
-    },
-    active: {
-      bg: config.theme.colors.red[20],
-    },
-    disabled: {
-      bg: config.theme.colors.gray[95],
-      border: config.theme.colors.gray[95],
-      color: config.theme.colors.gray[60],
+      bg: '#777777',
     },
   },
 })
