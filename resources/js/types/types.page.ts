@@ -1,4 +1,4 @@
-export interface PageBuilderProps {
+export interface PageProps {
   title: string
   description: string
   route?: {
