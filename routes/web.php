@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ListingController;
+use App\Http\Controllers\ListingsController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Models\Listings;
@@ -12,6 +12,6 @@ Route::get('/login', function () {
     ]);
 });
 
-Route::get('/', [ListingController::class, 'index']);
+Route::get('/', [ListingsController::class, 'index']);
 
-Route::get('/listings/{listing}', [ListingController::class, 'show']);
+Route::get('/listings/{listings}', [ListingsController::class, 'show']);
