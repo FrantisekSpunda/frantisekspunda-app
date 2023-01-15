@@ -56,6 +56,10 @@ a {
     text-decoration: underline;
     @apply text-base text-primary-60
   }
+
+  .box {
+    @apply bg-black border rounded-sm border-border-default shadow-box
+  }
 }
 
 @tailwind components;

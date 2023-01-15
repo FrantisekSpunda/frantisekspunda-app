@@ -4,7 +4,8 @@ import { Input, Button, Hr, Grid } from 'components'
 import { useMessage, usePage } from 'hooks'
 import * as yup from 'yup'
 import { Link } from '@inertiajs/inertia-react'
-import Three from './Three'
+import Three from '../../components/Three'
+import { Inertia } from '@inertiajs/inertia'
 
 const PageAuth: React.FC = () => {
   const { page } = usePage()
@@ -39,7 +40,8 @@ const PageAuth: React.FC = () => {
     //   }
     //   case 'error': {
     //     actions.setSubmitting(false)
-    setMessage({ type: 'error', text: 'Nebylo možné se přihlásit' })
+    Inertia.visit('/')
+    setMessage({ type: 'info', text: 'Funkce přihlašování zatím není přidaná' })
     //   }
     // }
   }
@@ -56,7 +58,7 @@ const PageAuth: React.FC = () => {
           validationSchema={validationLogin}
           onSubmit={onSubmit}
         >
-          <Form className="w-full px-16 py-20 bg-black border rounded-sm border-border-default shadow-box">
+          <Form className="w-full px-16 py-20 box">
             <h3 className="pb-10 italic">{page.title}</h3>
 
             <Input.Text

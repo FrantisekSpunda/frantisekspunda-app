@@ -3,42 +3,26 @@ import { useStore } from 'hooks'
 import { cn } from 'utils'
 import MessageContainer from './MessageContainer'
 import ModalContainer from './ModalContainer'
-// import Navbar from './Navbar'
-// import Sidebar from './Sidebar'
 import TabMenu from './TabMenu'
+import Topbar from './Topbar'
+import { Head } from '@inertiajs/inertia-react'
+import { usePage } from 'hooks'
 
 interface LayoutProps {
   children: React.ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { store } = useStore()
-
   return (
-    <div
-      className={cn(
-        'w-screen h-screen overflow-hidden flex',
-        store.darkMode && 'dark'
-      )}
-    >
+    <div className={cn('w-screen h-screen overflow-hidden flex')}>
       <TabMenu />
       <ModalContainer />
       <MessageContainer />
-      {/* {!!page.layout?.navigation && <Sidebar />} */}
 
-      <div
-        className={cn(
-          'w-screen h-screen transition-[width] duration-300 text-gray-99'
-        )}
-      >
-        {/* {!!page.layout?.topbar && <Navbar />} */}
+      <div className="w-full h-full overflow-auto text-white bg-main scrollbar-styled">
+        <Topbar />
 
-        <main
-          id="main"
-          className="w-full h-full overflow-auto text-white bg-main scrollbar-styled"
-        >
-          {children}
-        </main>
+        <main id="main">{children}</main>
       </div>
     </div>
   )

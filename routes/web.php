@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ListingController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Models\Listings;
@@ -11,17 +12,6 @@ Route::get('/login', function () {
     ]);
 });
 
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'title' => 'Bobek',
-        'description' => 'Toto je hlavní bobek webu bobek.cz',
-    ]);
-});
+Route::get('/', [ListingController::class, 'index']);
 
-Route::get('/listing', function () {
-    return response(Listings::all());
-});
-
-// Route::get('/listing/{listing}', function (Listing $listing) {
-//     return response($listing);
-// });
+Route::get('/listings/{listing}', [ListingController::class, 'show']);

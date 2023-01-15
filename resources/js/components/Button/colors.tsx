@@ -74,7 +74,7 @@ const config = {
   },
 }
 
-export type btnColors = 'primary'
+export type btnColors = 'primary' | 'secondary'
 
 type getColorsReturn = {
   [x in btnColors]: {
@@ -118,6 +118,19 @@ const getColors = (): getColorsReturn => ({
     disabled: {
       bg: '#777777',
     },
+  },
+  secondary: {
+    color: '#F1F1F1',
+    icon: '#F1F1F1',
+    bg: 'transparent',
+    border: '#5e5e5e',
+    hover: {
+      bg: '#303030',
+    },
+    active: {
+      bg: '#474747',
+    },
+    disabled: {},
   },
 })
 

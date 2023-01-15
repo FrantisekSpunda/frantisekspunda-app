@@ -11,9 +11,9 @@ const pxToRem = (number: number) => Math.floor((number / 16) * 10000) / 10000
  */
 const Context = React.createContext({
   width: pxToRem(config.theme.grid.fixedWidth),
-  gapX: pxToRem(config.theme.grid.gapX),
-  gapY: pxToRem(config.theme.grid.gapY),
-  paddingX: pxToRem(config.theme.grid.paddingX),
+  gapXRem: pxToRem(config.theme.grid.gapX),
+  gapYRem: pxToRem(config.theme.grid.gapY),
+  paddingXRem: pxToRem(config.theme.grid.paddingX),
 })
 
 /**
@@ -54,29 +54,29 @@ const Grid: GridType = ({
   const [width, setWidth] = React.useState(0)
   const onResize = useOnResize({ timeout: 500 })
 
-  gapX = pxToRem(gapX)
-  gapY = pxToRem(gapY)
-  paddingX = pxToRem(paddingX)
-  fixedWidth = pxToRem(fixedWidth)
+  const gapXRem = pxToRem(gapX)
+  const gapYRem = pxToRem(gapY)
+  const paddingXRem = pxToRem(paddingX)
+  const fixedWidthRem = pxToRem(fixedWidth)
 
   React.useEffect(() => {
     setWidth(pxToRem(ref.current?.scrollWidth || 0))
   }, [onResize])
 
   return (
-    <Context.Provider value={{ width, gapX, gapY, paddingX }}>
+    <Context.Provider value={{ width, gapXRem, gapYRem, paddingXRem }}>
       <div
         style={{
-          paddingBlock: gapY - gapY / 4 + 'rem',
+          paddingBlock: gapYRem - gapYRem / 4 + 'rem',
         }}
         className={cn('border border-transparent', className)}
       >
         <div
           ref={ref}
           style={{
-            marginBlock: '-' + gapY + 'rem',
-            paddingInline: paddingX - gapY / 2 + 'rem',
-            ...(type === 'fixed' ? { maxWidth: fixedWidth + 'rem' } : {}),
+            marginBlock: '-' + gapYRem + 'rem',
+            paddingInline: paddingXRem + 'rem',
+            ...(type === 'fixed' ? { maxWidth: fixedWidthRem + 'rem' } : {}),
           }}
           className={cn(
             'flex flex-wrap w-full',
@@ -116,11 +116,11 @@ Grid.useBox = ({ children, w, className, m = false }) => {
         {`
           #${id} {
             width: calc(${
-              (w / 12) * (context.width - context.paddingX * 2)
-            }rem ${last ? '- ' + context.gapX / 2 + 'rem' : ''});
+              (w / 12) * (context.width - context.paddingXRem * 2)
+            }rem ${last ? '- ' + context.gapXRem + 'rem' : ''});
             
-            margin-inline: ${last ? context.gapX / 2 + 'rem' : '0'};
-            margin-block: ${last ? context.gapY / 2 + 'rem' : '0'};
+            margin-inline: ${last ? context.gapXRem / 2 + 'rem' : '0'};
+            margin-block: ${last ? context.gapYRem / 2 + 'rem' : '0'};
           }
         `}
       </style>
