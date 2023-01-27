@@ -1,5 +1,5 @@
 import React from 'react'
-import { PageProps, WidgetProps } from 'types'
+import { PageProps, WidgetBase, WidgetInputText, WidgetProps } from 'types'
 import { Button, Grid, Input } from 'components'
 import { Head } from '@inertiajs/inertia-react'
 import { cut } from 'utils'
@@ -7,6 +7,8 @@ import { Inertia } from '@inertiajs/inertia'
 import { Form, Formik } from 'formik'
 
 const HomePage: React.FC<PageProps> = (props) => {
+  console.log(props)
+
   return (
     <>
       <Head title={props.title} />
@@ -37,7 +39,7 @@ const Widget: React.FC<WidgetProps> = (props) => {
       return (
         <Grid.useBox w={props.columnSpan}>
           <div className="w-full p-4 box">
-            <h5 className="mb-3">{props.label}</h5>
+            <h5 className="mb-3">{props.props.label}</h5>
             <ul>
               {props.props.data.length ? (
                 <>
@@ -73,28 +75,37 @@ const Widget: React.FC<WidgetProps> = (props) => {
           <Formik
             initialValues={Object.fromEntries(
               props.children
-                ?.filter((item) => item.type === 'input-text')
-                .map((item) => [item.name, '']) || []
+                ?.filter((item) => item.type === 'input')
+                .map((item) => [
+                  item.name,
+                  (item as WidgetBase & WidgetInputText).props.value || '',
+                ]) || []
             )}
             onSubmit={() => {}}
           >
             <Form className="w-full p-4 box">
-              <h5 className="mb-3">{props.label}</h5>
-              <ul>
+              <Grid type="fill">
+                <Grid.useBox w={12}>
+                  <h5 className="mb-3">{props.props.label}</h5>
+                </Grid.useBox>
                 {props.children?.length ? (
                   <MapWidgets widgets={props.children} />
                 ) : null}
-              </ul>
+              </Grid>
             </Form>
           </Formik>
         </Grid.useBox>
       )
-    case 'input-text':
-      return <Input.Text name={props.name} {...props.props} />
+    case 'input':
+      return (
+        <Grid.useBox w={props.columnSpan}>
+          <Input.Text {...props.props} name={props.name} />
+        </Grid.useBox>
+      )
     case 'button':
       return (
         <Button name={props.name} {...props.props}>
-          {props.label}
+          {props.props.label}
         </Button>
       )
   }

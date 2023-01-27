@@ -21,9 +21,9 @@ class ListingsController extends Controller
                 [
                     'type' => 'table',
                     'name' => 'listings',
-                    'label' => 'Položky',
                     'columnSpan' => 12,
                     'props' => [
+                        'label' => 'Položky',
                         'data' => Listings::all()
                     ]
                 ]
@@ -33,7 +33,31 @@ class ListingsController extends Controller
 
     public function show(Listings $listings)
     {
-        $listings = $listings->getAttributes();
+        $listing = $listings->getAttributes();
+        $columns = array_keys($listing);
+        $columns = array_map(function ($column) use ($listing) {
+            return [
+                'type' => 'input',
+                'columnSpan' => 12,
+                'name' => $column,
+                'props' => [
+                    'type' => 'text',
+                    'placeholder' => 'Vložte ' . $column,
+                    'label' => $column,
+                    'required' => true,
+                    'value' => $listing[$column]
+                ]
+            ];
+        }, $columns);
+        array_push($columns, [
+            'type' => 'button',
+            'name' => 'send-listing',
+            'props' => [
+                'label' => 'Odeslat',
+                'color' => 'primary',
+                'type' => 'submit'
+            ]
+        ]);
 
         return Inertia::render('Home', [
             'title' => $listings['title'],
@@ -42,95 +66,18 @@ class ListingsController extends Controller
                 [
                     'type' => 'form',
                     'name' => 'listing-form',
-                    'label' => 'Úprava položky: ' . $listings['id'],
                     'columnSpan' => 6,
-                    'children' => [
-                        [
-                            'type' => 'input-text',
-                            'name' => 'title',
-                            'props' => [
-                                'type' => 'text',
-                                'placeholder' => 'Nadpis',
-                                'label' => 'Nadpis',
-                                'required' => true
-                            ]
-                        ],
-                        [
-                            'type' => 'input-text',
-                            'name' => 'company',
-                            'props' => [
-                                'type' => 'text',
-                                'placeholder' => 'Společnost',
-                                'label' => 'Společnost',
-                                'required' => true
-                            ]
-                        ],
-                        [
-                            'type' => 'input-text',
-                            'name' => 'location',
-                            'props' => [
-                                'type' => 'text',
-                                'placeholder' => 'Lokace',
-                                'label' => 'Lokace',
-                                'required' => true
-                            ]
-                        ],
-                        [
-                            'type' => 'input-text',
-                            'name' => 'website',
-                            'props' => [
-                                'type' => 'text',
-                                'placeholder' => 'Web',
-                                'label' => 'Web',
-                                'required' => true
-                            ]
-                        ],
-                        [
-                            'type' => 'input-text',
-                            'name' => 'email',
-                            'props' => [
-                                'type' => 'text',
-                                'placeholder' => 'Email',
-                                'label' => 'Email',
-                                'required' => true
-                            ]
-                        ],
-                        [
-                            'type' => 'input-text',
-                            'name' => 'tags',
-                            'props' => [
-                                'type' => 'text',
-                                'placeholder' => 'Tagy',
-                                'label' => 'Tagy',
-                                'required' => true
-                            ]
-                        ],
-                        [
-                            'type' => 'input-text',
-                            'name' => 'description',
-                            'props' => [
-                                'type' => 'text',
-                                'placeholder' => 'Popis',
-                                'label' => 'Popis',
-                                'required' => true
-                            ]
-                        ],
-                        [
-                            'type' => 'button',
-                            'name' => 'button-lol',
-                            'label' => 'Odeslat',
-                            'props' => [
-                                'color' => 'primary',
-                                'type' => 'submit'
-                            ]
-                        ]
-
-                    ]
+                    'props' => [
+                        'label' => 'Úprava položky: ' . $listings['id'],
+                    ],
+                    'children' => $columns
                 ]
             ]
-
         ]);
     }
+
+
+
 
 
     //////////////////////////////// ? COPIED update to use
