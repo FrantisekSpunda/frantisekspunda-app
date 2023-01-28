@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Listings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 
 class ListingsController extends Controller
@@ -19,6 +20,21 @@ class ListingsController extends Controller
             'description' => 'Toto je hlavní bobek webu bobek.cz',
             'widgets' => [
                 [
+                    'type' => 'button',
+                    'name' => 'delete this shit',
+                    'columnSpan' => 2,
+                    'props' => [
+                        'type' => 'button',
+                        'label' => 'Nový',
+                        'color' => 'primary',
+                        'action' => [
+                            'redirect' => [
+                                'url' => '/create'
+                            ]
+                        ]
+                    ]
+                ],
+                [
                     'type' => 'table',
                     'name' => 'listings',
                     'columnSpan' => 12,
@@ -31,11 +47,14 @@ class ListingsController extends Controller
         ]);
     }
 
-    public function show(Listings $listings)
+
+    /**
+     * Show form for single lising or form for create listing
+     */
+    public function show(Listings | null $listings = null)
     {
-        $listing = $listings->getAttributes();
-        $columns = array_keys($listing);
-        $columns = array_map(function ($column) use ($listing) {
+        $columns = ['title', 'company', 'location', 'website', 'email', 'description', 'tags'];
+        $columns = array_map(function ($column) {
             return [
                 'type' => 'input',
                 'columnSpan' => 12,
@@ -44,104 +63,147 @@ class ListingsController extends Controller
                     'type' => 'text',
                     'placeholder' => 'Vložte ' . $column,
                     'label' => $column,
-                    'required' => true,
-                    'value' => $listing[$column]
+                    'rules' => ['required', 'string']
                 ]
             ];
         }, $columns);
-        array_push($columns, [
-            'type' => 'button',
-            'name' => 'send-listing',
-            'props' => [
-                'label' => 'Odeslat',
-                'color' => 'primary',
-                'type' => 'submit'
-            ]
-        ]);
+
+        if ($listings) {
+            $listingsAtt = $listings->getAttributes();
+            foreach ($columns as $key => $column) {
+                $column['props']['value'] = $listingsAtt[$column['name']];
+                // $column->props['value'] = $listingsAtt[$column->name];
+                $columns[$key] = $column;
+            }
+        }
 
         return Inertia::render('Home', [
-            'title' => $listings['title'],
-            'description' => 'Detail položky ' . $listings['title'],
+            'title' => isset($listings['title']) || 'Create',
+            'description' => $listings ? 'Detail položky ' . $listings['title'] : 'Nová položka',
             'widgets' => [
                 [
                     'type' => 'form',
                     'name' => 'listing-form',
                     'columnSpan' => 6,
                     'props' => [
-                        'label' => 'Úprava položky: ' . $listings['id'],
+                        'label' => $listings ? 'Úprava položky: ' . $listings['id'] : 'Vytvoření nové položky',
                     ],
-                    'children' => $columns
+                    'children' => array_merge($columns, [
+                        [
+                            'type' => 'button',
+                            'name' => 'send-listing',
+                            'props' => [
+                                'type' => 'submit',
+                                'label' => 'Odeslat',
+                                'color' => 'primary',
+                                'action' => [
+                                    'call' => [
+                                        'type' => $listings ? 'update' : 'create',
+                                        'query' => [$listings ? $listings->getAttribute('id') : null]
+                                    ]
+                                ]
+                            ]
+                        ],
+                    ])
+                ],
+                [
+                    'type' => 'button',
+                    'name' => 'delete this shit',
+                    'columnSpan' => 2,
+                    'props' => [
+                        'type' => 'button',
+                        'label' => 'odstranit',
+                        'color' => 'primary',
+                        'action' => [
+                            'call' => [
+                                'type' => 'delete',
+                                'query' => [$listings ? $listings->getAttribute('id') : null]
+                            ]
+                        ]
+                    ]
                 ]
             ]
         ]);
     }
 
+    // Update Listing Data
+    public function update(Request $request)
+    {
+        $formFields = $request->validate([
+            'id' => 'required',
+            'payload' => [
+                'title' => 'required',
+                'company' => ['required'],
+                'location' => 'required',
+                'website' => 'required',
+                'email' => ['required', 'email'],
+                'tags' => 'required',
+                'description' => 'required'
+            ]
+        ]);
+        $listings = Listings::all()->find($request['id']);
+
+        $listings->update($formFields['payload']);
+
+        return response([
+            'message' => 'Listing was updated'
+        ]);
+    }
 
 
-
-
-    //////////////////////////////// ? COPIED update to use
     // Store Listing Data
     public function store(Request $request)
     {
         $formFields = $request->validate([
-            'title' => 'required',
-            'company' => ['required', Rule::unique('listings', 'company')],
-            'location' => 'required',
-            'website' => 'required',
-            'email' => ['required', 'email'],
-            'tags' => 'required',
-            'description' => 'required'
+            'payload' => [
+                'title' => 'required',
+                'company' => ['required', Rule::unique('listings', 'company')],
+                'location' => 'required',
+                'website' => 'required',
+                'email' => ['required', 'email'],
+                'tags' => 'required',
+                'description' => 'required'
+            ]
         ]);
 
-        if ($request->hasFile('logo')) {
-            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
-        }
+        Listings::create($formFields['payload']);
 
-        $formFields['user_id'] = auth()->id();
-
-        Listings::create($formFields);
-
-        return redirect('/')->with('message', 'Listing created successfully!');
-    }
-
-    // Update Listing Data
-    public function update(Request $request, Listings $listing)
-    {
-        // Make sure logged in user is owner
-        if ($listing->user_id != auth()->id()) {
-            abort(403, 'Unauthorized Action');
-        }
-
-        $formFields = $request->validate([
-            'title' => 'required',
-            'company' => ['required'],
-            'location' => 'required',
-            'website' => 'required',
-            'email' => ['required', 'email'],
-            'tags' => 'required',
-            'description' => 'required'
+        return response([
+            'message' => 'Listing was created'
         ]);
-
-        if ($request->hasFile('logo')) {
-            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
-        }
-
-        $listing->update($formFields);
-
-        return back()->with('message', 'Listing updated successfully!');
     }
+
 
     // Delete Listing
-    public function destroy(Listings $listing)
+    public function destroy(Request $request)
     {
-        // Make sure logged in user is owner
-        if ($listing->user_id != auth()->id()) {
-            abort(403, 'Unauthorized Action');
-        }
+        $request->validate([
+            'id' => 'required'
+        ]);
+        $listings = Listings::all()->find($request['id']);
+        $listings->delete();
+        return response([
+            'message' => 'Listing was deleted'
+        ]);
+    }
 
-        $listing->delete();
-        return redirect('/')->with('message', 'Listing deleted successfully');
+
+    /**
+     * All CRUD action on one route and function. This function 😄
+     */
+    public function call(Request $request, string $action)
+    {
+        switch ($action) {
+            case 'delete': {
+                    return self::destroy($request);
+                }
+            case 'create': {
+                    return self::store($request);
+                }
+            case 'update': {
+                    return self::update($request);
+                }
+        }
     }
 }
 

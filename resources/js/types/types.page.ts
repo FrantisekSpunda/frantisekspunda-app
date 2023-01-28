@@ -52,7 +52,7 @@ export type WidgetInputText = {
   props: {
     type: 'text'
     placeholder: string
-    required: boolean
+    rules: ('required' | 'string' | 'email')[]
     value?: string
   }
 }
@@ -63,5 +63,14 @@ export type WidgetButton = {
     label: string
     type: 'submit' | 'reset' | 'submit'
     color: 'primary' | 'secondary'
+    action: {
+      call?: {
+        type: 'update' | 'delete' | 'create'
+        query?: string[]
+      }
+      redirect?: {
+        url: string
+      }
+    }
   }
 }

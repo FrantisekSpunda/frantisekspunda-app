@@ -1,29 +1,26 @@
 import React from 'react'
-import { PageProps, WidgetBase, WidgetInputText, WidgetProps } from 'types'
-import { Button, Grid, Input } from 'components'
+import { PageProps, WidgetProps } from 'types'
 import { Head } from '@inertiajs/inertia-react'
-import { cut } from 'utils'
-import { Inertia } from '@inertiajs/inertia'
-import { Form, Formik } from 'formik'
+import Table from './widgets/widgets.Table'
+import Form from './widgets/widgets.Form'
+import Input from './widgets/widgets.Input'
+import Button from './widgets/widgets.Button'
+import { Grid } from 'components'
 
 const HomePage: React.FC<PageProps> = (props) => {
-  console.log(props)
-
   return (
     <>
       <Head title={props.title} />
-      <Formik initialValues={{}} onSubmit={() => {}}>
-        <Form>
-          <Grid type="fixed">
-            <MapWidgets widgets={props.widgets} />
-          </Grid>
-        </Form>
-      </Formik>
+      <Grid type="fixed">
+        <MapWidgets widgets={props.widgets} />
+      </Grid>
     </>
   )
 }
 
-const MapWidgets: React.FC<{ widgets?: WidgetProps[] }> = ({ widgets }) => {
+export const MapWidgets: React.FC<{ widgets?: WidgetProps[] }> = ({
+  widgets,
+}) => {
   return widgets?.length ? (
     <div>
       {widgets.map((item, i) => {
@@ -36,78 +33,13 @@ const MapWidgets: React.FC<{ widgets?: WidgetProps[] }> = ({ widgets }) => {
 const Widget: React.FC<WidgetProps> = (props) => {
   switch (props.type) {
     case 'table':
-      return (
-        <Grid.useBox w={props.columnSpan}>
-          <div className="w-full p-4 box">
-            <h5 className="mb-3">{props.props.label}</h5>
-            <ul>
-              {props.props.data.length ? (
-                <>
-                  <li className="flex justify-between border-b border-border-default">
-                    {Object.keys(props.props.data[0]).map((key, i) => (
-                      <p className="w-full p-2" key={i}>
-                        {key}
-                      </p>
-                    ))}
-                  </li>
-                  {props.props.data.map((data, i) => (
-                    <li
-                      className="flex justify-between border-b cursor-pointer border-border-default hover:bg-gray-10 active:bg-gray-20"
-                      onClick={() => Inertia.visit(`/${props.name}/${data.id}`)}
-                      key={i}
-                    >
-                      {Object.values(data).map((value, i) => (
-                        <p className="w-full p-2" key={i}>
-                          {cut(String(value), 10)}
-                        </p>
-                      ))}
-                    </li>
-                  ))}
-                </>
-              ) : null}
-            </ul>
-          </div>
-        </Grid.useBox>
-      )
+      return <Table {...props} />
     case 'form':
-      return (
-        <Grid.useBox w={props.columnSpan}>
-          <Formik
-            initialValues={Object.fromEntries(
-              props.children
-                ?.filter((item) => item.type === 'input')
-                .map((item) => [
-                  item.name,
-                  (item as WidgetBase & WidgetInputText).props.value || '',
-                ]) || []
-            )}
-            onSubmit={() => {}}
-          >
-            <Form className="w-full p-4 box">
-              <Grid type="fill">
-                <Grid.useBox w={12}>
-                  <h5 className="mb-3">{props.props.label}</h5>
-                </Grid.useBox>
-                {props.children?.length ? (
-                  <MapWidgets widgets={props.children} />
-                ) : null}
-              </Grid>
-            </Form>
-          </Formik>
-        </Grid.useBox>
-      )
+      return <Form {...props} />
     case 'input':
-      return (
-        <Grid.useBox w={props.columnSpan}>
-          <Input.Text {...props.props} name={props.name} />
-        </Grid.useBox>
-      )
+      return <Input {...props} />
     case 'button':
-      return (
-        <Button name={props.name} {...props.props}>
-          {props.props.label}
-        </Button>
-      )
+      return <Button {...props} />
   }
 }
 

@@ -20,7 +20,7 @@ interface ButtonProps
   color?: btnColors
   children?: React.ReactNode
   className?: string
-  onClick?: () => void
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
   submit?: boolean
   icon?: { position?: 'left' | 'right' } & IconType
   loading?: boolean

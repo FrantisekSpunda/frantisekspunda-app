@@ -1,12 +1,9 @@
 import React from 'react'
-import { useStore } from 'hooks'
 import { cn } from 'utils'
 import MessageContainer from './MessageContainer'
 import ModalContainer from './ModalContainer'
 import TabMenu from './TabMenu'
 import Topbar from './Topbar'
-import { Head } from '@inertiajs/inertia-react'
-import { usePage } from 'hooks'
 
 interface LayoutProps {
   children: React.ReactNode
