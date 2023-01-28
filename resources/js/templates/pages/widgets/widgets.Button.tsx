@@ -24,17 +24,14 @@ const Button: React.FC<WidgetBase & WidgetButton> = (props) => {
 
   const onClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-
     if (action?.call) {
       if (action.call?.type !== 'delete') {
         formik?.setSubmitting(true)
         formik?.validateForm()
       }
 
-      if (
-        (await formik?.validateForm(formik?.values)) ||
-        action.call.type === 'delete'
-      ) {
+      await formik?.submitForm()
+      if (action.call.type === 'delete') {
         try {
           const res = await callApi(
             action?.call.type,
