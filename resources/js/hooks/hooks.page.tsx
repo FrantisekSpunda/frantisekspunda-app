@@ -1,26 +1,27 @@
 import React from 'react'
-import { PageBuilderProps } from 'types'
+import { PageProps } from 'types'
 import { createContext, ReactNode, useContext, useState } from 'react'
 
 // ts for ServicePage
-type initialStateKeys = keyof PageBuilderProps
-type initialStateValues = PageBuilderProps[initialStateKeys]
+type initialStateKeys = keyof PageProps
+type initialStateValues = PageProps[initialStateKeys]
 interface PageContextProps {
-  page: PageBuilderProps
+  page: PageProps
   // setPage: (prop: initialStateKeys, value: initialStateValues) => void
-  // withPage: (dispatch: (prev: PageBuilderProps) => PageBuilderProps) => void
+  // withPage: (dispatch: (prev: PageProps) => PageProps) => void
 }
 
 const PageContext = createContext<PageContextProps>({
   page: {
     title: '401',
     description: '',
+    widgets: [],
   },
 })
 
 export const Page: React.FC<{
   children: ReactNode
-  store: PageBuilderProps
+  store: PageProps
 }> = ({ children, store }) => {
   const [page, setState] = useState(store)
 
@@ -28,7 +29,7 @@ export const Page: React.FC<{
     setState((prev) => ({ ...prev, [prop]: value }))
   }
 
-  const withPage = (dispatch: (prev: PageBuilderProps) => PageBuilderProps) => {
+  const withPage = (dispatch: (prev: PageProps) => PageProps) => {
     setState(dispatch)
   }
 

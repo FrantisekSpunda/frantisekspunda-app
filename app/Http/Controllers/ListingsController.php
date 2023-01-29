@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Listings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 
@@ -15,6 +16,8 @@ class ListingsController extends Controller
      */
     public function index()
     {
+        if (!Auth::user()) return Inertia::location('/login');
+
         return Inertia::render('Home', [
             'title' => 'Bobek',
             'description' => 'Toto je hlavní bobek webu bobek.cz',
@@ -53,6 +56,8 @@ class ListingsController extends Controller
      */
     public function show(Listings | null $listings = null)
     {
+        if (!Auth::user()) return Inertia::location('/login');
+
         $columns = ['title', 'company', 'location', 'website', 'email', 'description', 'tags'];
         $columns = array_map(function ($column) {
             return [
@@ -99,6 +104,7 @@ class ListingsController extends Controller
                                 'action' => [
                                     'call' => [
                                         'type' => $listings ? 'update' : 'create',
+                                        'table' => 'listings',
                                         'query' => [$listings ? $listings->getAttribute('id') : null]
                                     ]
                                 ]

@@ -21,6 +21,7 @@ export type WidgetTypes =
   | WidgetForm
   | WidgetInputText
   | WidgetButton
+  | WidgetText
 
 export type WidgetBase = {
   name: string
@@ -66,11 +67,19 @@ export type WidgetButton = {
     action: {
       call?: {
         type: 'update' | 'delete' | 'create'
+        table: string
         query?: string[]
       }
       redirect?: {
         url: string
       }
     }
+  }
+}
+
+export type WidgetText = {
+  type: 'text'
+  props: {
+    text: string
   }
 }

@@ -5,6 +5,7 @@ import Table from './widgets/widgets.Table'
 import Form from './widgets/widgets.Form'
 import Input from './widgets/widgets.Input'
 import Button from './widgets/widgets.Button'
+import Text from './widgets/widgets.Text'
 import { Grid } from 'components'
 
 const HomePage: React.FC<PageProps> = (props) => {
@@ -40,6 +41,8 @@ const Widget: React.FC<WidgetProps> = (props) => {
       return <Input {...props} />
     case 'button':
       return <Button {...props} />
+    case 'text':
+      return <Text {...props} />
   }
 }
 
